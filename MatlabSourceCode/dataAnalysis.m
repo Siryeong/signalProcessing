@@ -1,14 +1,15 @@
 %% data open
+
 caf3 = close5(3,:);
 oaf3 = open5(3,:);
 N = length(close5);
 samplingRate = 256;
 t = [0:N-1]/samplingRate;
 
-%% fft
+%% fft 
 
-[cspct f] = myfft(caf3, samplingRate, N);
-[ospct f] = myfft(oaf3, samplingRate, N);
+[cspct, f] = myfft(caf3, samplingRate, N);
+[ospct, f] = myfft(oaf3, samplingRate, N);
 
 %% data smoothing
 %csm = smoothdata(cspct, 'gaussian', 20);
@@ -36,12 +37,12 @@ plot(t, oaf3);
 
 
 %% function
-function [spct, f] = myfft(x, samplingRate, N)
+function [spct, W] = myfft(x, samplingRate, N)
 
 spct = fft(x);
 spct = fftshift(spct);
 fs = samplingRate/N;
-f = fs*[0:N-1];
-f = f - mean(f);
+W = fs*[0:N-1];
+W = W - mean(W);
 
 end

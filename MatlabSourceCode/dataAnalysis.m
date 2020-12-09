@@ -1,8 +1,8 @@
 %% data open
 
-caf3 = close5(3,:);
-oaf3 = open5(3,:);
-N = length(close5);
+caf3 = close4(3,:);
+oaf3 = open4(3,:);
+N = length(close4);
 samplingRate = 256;
 t = [0:N-1]/samplingRate;
 
@@ -10,30 +10,28 @@ t = [0:N-1]/samplingRate;
 
 [cspct, f] = myfft(caf3, samplingRate, N);
 [ospct, f] = myfft(oaf3, samplingRate, N);
+cspct = abs(cspct);
+ospct = abs(ospct);
 
 %% data smoothing
-%csm = smoothdata(cspct, 'gaussian', 20);
-%osm = smoothdata(ospct, 'gaussian', 20);
 
-csm = movmean(cspct, 1);
-osm = movmean(ospct, 1);
+csm = movmean(cspct, 30);
+osm = movmean(ospct, 30);
 
 %% ploting
 % fft
 figure(1)
-subplot(211);
-plot(f, abs(csm));
-xlim([1 50]); ylim([0 5*10^7]);
-subplot(212);
-plot(f, abs(osm));
-xlim([1 50]); ylim([0 5*10^7]);
+plot(f, csm); hold on;
+plot(f, osm); hold off;
+legend("C", "O");
+xlim([1 50]);
 
 %raw
-figure(2);
-subplot(211);
-plot(t, caf3);
-subplot(212);
-plot(t, oaf3);
+% figure(2);
+% subplot(211);
+% plot(t, caf3);
+% subplot(212);
+% plot(t, oaf3);
 
 
 %% function
